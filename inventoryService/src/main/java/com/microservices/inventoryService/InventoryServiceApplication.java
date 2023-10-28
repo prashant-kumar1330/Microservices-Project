@@ -23,10 +23,10 @@ public class InventoryServiceApplication {
 	public CommandLineRunner runner(InventoryRepository inventoryRepository){
 
 		return run ->{
-			Optional<Inventory> item1 = inventoryRepository.findByskuCode("iphone12");
-			if(item1.isPresent()){
+			Inventory item1 = inventoryRepository.findByskuCode("iphone12");
+			if(item1!=null){
 
-				inventoryRepository.updateInventory(item1.get().getId());
+				inventoryRepository.updateInventory((int) item1.getId());
 			}
 			else{
 				Inventory inventory = Inventory.builder()
@@ -36,10 +36,10 @@ public class InventoryServiceApplication {
 						.build();
 				inventoryRepository.save(inventory);
 			}
-			Optional<Inventory> item2 = inventoryRepository.findByskuCode("iphone13");
-			if(item2.isPresent()){
+			Inventory item2 = inventoryRepository.findByskuCode("iphone13");
+			if(item2!=null){
 
-				inventoryRepository.updateInventory(item2.get().getId());
+				inventoryRepository.updateInventory((int) item2.getId());
 			}
 			else{
 				Inventory inventory1 = Inventory.builder()
