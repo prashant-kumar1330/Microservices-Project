@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @SpringBootApplication
 public class InventoryServiceApplication {
@@ -22,18 +23,34 @@ public class InventoryServiceApplication {
 	public CommandLineRunner runner(InventoryRepository inventoryRepository){
 
 		return run ->{
-			Inventory inventory = Inventory.builder()
-					.skuCode("iphone12")
-					.price(BigDecimal.valueOf(120000))
-					.quantity(3)
-					.build();
-			Inventory inventory1 = Inventory.builder()
-					.skuCode("iphone13")
-					.price(BigDecimal.valueOf(130000))
-					.quantity(4)
-					.build();
-			inventoryRepository.save(inventory);
-			inventoryRepository.save(inventory1);
+			Inventory item1 = inventoryRepository.findByskuCode("iphone12");
+			if(item1!=null){
+
+				inventoryRepository.updateInventory((int) item1.getId());
+			}
+			else{
+				Inventory inventory = Inventory.builder()
+						.skuCode("iphone12")
+						.price(BigDecimal.valueOf(120000))
+						.quantity(3)
+						.build();
+				inventoryRepository.save(inventory);
+			}
+			Inventory item2 = inventoryRepository.findByskuCode("iphone13");
+			if(item2!=null){
+
+				inventoryRepository.updateInventory((int) item2.getId());
+			}
+			else{
+				Inventory inventory1 = Inventory.builder()
+						.skuCode("iphone13")
+						.price(BigDecimal.valueOf(130000))
+						.quantity(4)
+						.build();
+
+				inventoryRepository.save(inventory1);
+			}
+
 
 		};
 
