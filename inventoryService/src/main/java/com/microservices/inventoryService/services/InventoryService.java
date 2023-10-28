@@ -19,18 +19,17 @@ public class InventoryService {
     private final InventoryRepository inventoryRepository;
 
 
-
+/*
+* cases needs to be handled
+* 1) where skucode is not present in table
+* 2) where quantity requested is not available in inventory table
+* */
     public List<InventryResponse> findBySkuCode(List<String> skuCodes) {
         List<Inventory> inventory = inventoryRepository.findByskuCodeIn(skuCodes);
-        List<InventryResponse>  inventryResponses= skuCodes.stream().map(skuCode->{
-                                   Boolean isProductAvailable=false;
-                                   if(inventory.indexOf(skuCode)>=0 && inventory.get(inventory.indexOf(skuCode)).getQuantity()>0){
-                                       isProductAvailable=true;
-                                   }
-                             return     InventryResponse.builder().SkuCodes(skuCode)
-                                     .isInStock(isProductAvailable).build();
+        return inventory.stream().map(item->{
+                                return InventryResponse.builder().SkuCodes(item.getSkuCode())
+                                        .isInStock(item.getQuantity()>0).build();
 
                         }).toList();
- return  inventryResponses ;
     }
 }
