@@ -23,6 +23,7 @@ public class InventoryService {
 * cases needs to be handled
 * 1) where skucode is not present in table
 * 2) where quantity requested is not available in inventory table
+* 3) decrease the quantity when order is placed
 * */
     public List<InventryResponse> findBySkuCode(List<String> skuCodes) {
         List<Inventory> inventory = inventoryRepository.findByskuCodeIn(skuCodes);

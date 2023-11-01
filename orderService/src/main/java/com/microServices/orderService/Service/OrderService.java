@@ -25,7 +25,7 @@ import java.util.UUID;
 
 public class OrderService {
 
-    private final WebClient webClient;
+    private final WebClient.Builder webClientBuilder;
     private final OrderRepository orderRepository;
 
 
@@ -44,8 +44,13 @@ public class OrderService {
 
       //calling inventory service to check if that item is present in stock or not
 
-       InventoryResponseDto[] inventoryResponse= webClient.get()
-               .uri("http://localhost:8084/api/inventory",
+       /*
+       * order service have the local copy of the registory of the inventory service so even if the discovery server is down order service
+       * can call the inventory service by finding the url of it in local registory
+       * */
+
+       InventoryResponseDto[] inventoryResponse= webClientBuilder.build().get()
+               .uri("http://inventory-service/api/inventory",
                        uriBuilder -> uriBuilder.queryParam("skuCodes", skuCodes).build()) //http://localhost:8083/api/inventory?skuCodes=iphone12&skuCodes=iphone13
                .retrieve()
                .bodyToMono(InventoryResponseDto[].class)

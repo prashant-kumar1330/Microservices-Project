@@ -1,16 +1,17 @@
-package com.microServices.productService;
+package com.Microservices.discoveryServer;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-
+import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 
 @SpringBootApplication
-@EnableDiscoveryClient
-public class ProductServiceApplication {
+@EnableEurekaServer
+
+public class DiscoveryServerApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ProductServiceApplication.class, args);
+		SpringApplication.run(DiscoveryServerApplication.class, args);
 	}
 
 }
