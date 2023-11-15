@@ -1,7 +1,7 @@
 package com.microservices.inventoryService.controller;
 
 
-import com.microservices.inventoryService.Dto.InventoryDto;
+
 import com.microservices.inventoryService.Dto.InventryResponse;
 import com.microservices.inventoryService.services.InventoryService;
 import org.springframework.beans.factory.annotation.Autowired;
