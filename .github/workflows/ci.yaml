@@ -1,9 +1,12 @@
 name: Backend CI
 
 on:
+  workflow_dispatch:
+
   push:
     paths:
       - 'Microservices-Project/**'
+
   pull_request:
     paths:
       - 'Microservices-Project/**'
