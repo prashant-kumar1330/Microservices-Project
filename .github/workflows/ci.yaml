@@ -1,0 +1,66 @@
+name: Backend CI
+
+on:
+  push:
+    paths:
+      - 'Microservices-Project/**'
+  pull_request:
+    paths:
+      - 'Microservices-Project/**'
+
+env:
+  LOYAL_DIR: Microservices-Project
+
+jobs:
+  build:
+    name: Build - ${{ env.LOYAL_DIR }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./${{ env.LOYAL_DIR }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Java (17 LTS)
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Cache Maven Dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+
+      - name: Build Application
+        run: mvn clean package
+
+      - name: Upload JAR as Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ env.LOYAL_DIR }}-jar
+          path: ./${{ env.LOYAL_DIR }}/target/*.jar
+
+  test:
+    name: Test - ${{ env.LOYAL_DIR }}
+    runs-on: ubuntu-latest
+    needs: build
+    defaults:
+      run:
+        working-directory: ./${{ env.LOYAL_DIR }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Java
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Run Tests
+        run: mvn test
