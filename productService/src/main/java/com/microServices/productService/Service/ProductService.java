@@ -21,6 +21,7 @@ public class ProductService {
 
     public List<ProductResponse> getAllProduct() {
         List<Product> productList = myProductRepository.findAll();
+        //test
         return productList.stream().map((ProductService::mapProductToDTO)).toList();
     }
 
